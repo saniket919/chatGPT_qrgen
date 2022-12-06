@@ -2,29 +2,7 @@
 <html>
 <head>
     <title>QR Code Generator</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #8080ff;
-            background-image: url("https://www.transparenttextures.com/patterns/black-linen.png");
-            text-align: left;
-        }
-        form {
-            width: 50%;
-            margin: 0 auto;
-            background-color: #e0e0ff;
-            padding: 20px;
-            border-radius: 10px;
-        }
-        input, button {
-            padding: 10px;
-            font-size: 18px;
-        }
-        img {
-            margin: 0 auto;
-            display: block;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="qr-code-generator.css">
 </head>
 <body>
     <h1>QR Code Generator</h1>
@@ -43,38 +21,6 @@
 
     <div id="qr-code"></div>
 
-    <script>
-        function generateQRCode() {
-            // Get the data and options from the form
-            var data = document.getElementById("data").value;
-            var size = document.getElementById("size").value;
-            var color = document.getElementById("color").value;
-
-            // Make an HTTP request to the QR code API endpoint
-            var xhr = new XMLHttpRequest();
-            xhr.open("GET", "https://api.qrserver.com/v1/create-qr-code/?data=" + encodeURIComponent(data) + "&size=" + size + "x" + size + "&color=" + encodeURIComponent(color));
-            xhr.responseType = "blob";
-            xhr.onload = function() {
-                if (xhr.status === 200) {
-                    // Remove the old QR code image
-                    var img = document.getElementById("qr-code-img");
-                    if (img) {
-                        img.remove();
-                    }
-
-                    // Create a new image element
-                    img = document.createElement("img");
-                    img.id = "qr-code-img";
-
-                    // Set the QR code image source
-                    img.src = URL.createObjectURL(xhr.response);
-
-                    // Add the image to the page
-                    document.getElementById("qr-code").appendChild(img);
-                }
-            };
-            xhr.send();
-        }
-    </script>
+    <script src="qr-code-generator.js"></script>
 </body>
 </html>
