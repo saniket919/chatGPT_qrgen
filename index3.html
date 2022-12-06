@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>QR Code Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        form {
+            width: 50%;
+            margin: 0 auto;
+            text-align: center;
+        }
+        input, button {
+            padding: 10px;
+            font-size: 18px;
+        }
+        img {
+            margin: 0 auto;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <h1>QR Code Generator</h1>
+
+    <form>
+        <label for="data">Enter the data to be encoded:</label><br>
+        <input type="text" id="data" name="data"><br>
+        <label for="size">Enter the size of the QR code:</label><br>
+        <input type="number" id="size" name="size" value="100"><br>
+        <label for="color">Enter the color of the QR code (e.g. #000000):</label><br>
+        <input type="text" id="color" name="color" value="#000000"><br>
+        <button type="button" onclick="generateQRCode()">Generate QR Code</button>
+    </form>
+
+    <br>
+
+    <div id="qr-code"></div>
+
+    <script>
+        function generateQRCode() {
+            // Get the data and options from the form
+            var data = document.getElementById("data").value;
+            var size = document.getElementById("size").value;
+            var color = document.getElementById("color").value;
+
+            // Make an HTTP request to the QR code API endpoint
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "https://api.qrserver.com/v1/create-qr-code/?data=" + encodeURIComponent(data) + "&size=" + size + "x" + size + "&color=" + encodeURIComponent(color));
+            xhr.responseType = "blob";
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    // Remove the old QR code image
+                    var img = document.getElementById("qr-code-img");
+                    if (img) {
+                        img.remove();
+                    }
+
+                    // Create a new image element
+                    img = document.createElement("img");
+                    img.id = "qr-code-img";
+
+                    // Set the QR code image source
+                    img.src = URL.createObjectURL(xhr.response);
+
+                    // Add the image to the page
+                    document.getElementById("qr-code").appendChild(img);
+                }
+            };
+            xhr.send();
+        }
+    </script>
+</body>
+</html>
